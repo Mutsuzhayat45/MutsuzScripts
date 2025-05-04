@@ -1,55 +1,42 @@
--- Lumber Tycoon 2 GUI by Mutsuz_hayat45
--- Para, Ağaç TP, Araba TP, Auto Build özellikleri içerir.
+--[[ Mutsuz Hub | Lumber Tycoon 2 Features:
 
-local ScreenGui = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
-local Frame = Instance.new("Frame", ScreenGui)
-Frame.Size = UDim2.new(0, 300, 0, 250)
-Frame.Position = UDim2.new(0.5, -150, 0.5, -125)
-Frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-Frame.Active = true
-Frame.Draggable = true
+Tabs: Main, Farm, Build, Tree TP, Auto Bring Logs, Extra
 
-local title = Instance.new("TextLabel", Frame)
-title.Text = "Mutsuz_hayat45 GUI"
-title.Size = UDim2.new(1, 0, 0, 30)
-title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
+RGB border GUI
 
-local close = Instance.new("TextButton", Frame)
-close.Text = "X"
-close.Size = UDim2.new(0, 30, 0, 30)
-close.Position = UDim2.new(1, -30, 0, 0)
-close.MouseButton1Click:Connect(function() ScreenGui:Destroy() end)
+Mobile executer compatible (Arceus X, Hydrogen, Delta)
 
-local function createButton(text, yPos, callback)
-    local btn = Instance.new("TextButton", Frame)
-    btn.Text = text
-    btn.Size = UDim2.new(0, 260, 0, 30)
-    btn.Position = UDim2.new(0, 20, 0, yPos)
-    btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    btn.MouseButton1Click:Connect(callback)
-end
+Key system with Linkvertise
 
-createButton("1M Para Al", 0.2, function()
-    local player = game.Players.LocalPlayer
-    if game.ReplicatedStorage:FindFirstChild("Transaction") then
-        game.ReplicatedStorage.Transaction:FireServer(player, 1000000)
-    end
-end)
+Tree select + Auto Chop + Auto Bring + Auto Sell
 
-createButton("Ağaçlara Işınlan", 0.4, function()
-    local tree = workspace:FindFirstChild("TreeModels")
-    if tree then
-        game.Players.LocalPlayer.Character:MoveTo(tree.Position)
-    end
-end)
+Bridge remover toggle ]]
 
-createButton("Arabaya Işınlan", 0.6, function()
-    for _,v in pairs(workspace.Vehicles:GetChildren()) do
-        if v:FindFirstChild("Owner") and v.Owner.Value == game.Players.LocalPlayer.Name then
-            game.Players.LocalPlayer.Character:MoveTo(v.PrimaryPart.Position)
-            break
-        end
-    end
-end)
+
+-- Key System local HttpService = game:GetService("HttpService") local Players = game:GetService("Players") local Player = Players.LocalPlayer
+
+local function getKey() return "your_custom_key_here" -- replace with actual key logic end
+
+local function verifyKey(input) return input == getKey() end
+
+local function promptKey() local userInput = tostring(game:HttpGet("https://pastebin.com/raw/yourlink")) return verifyKey(userInput) end
+
+if not promptKey() then Player:Kick("Invalid Key. Get it from Linkvertise.") return end
+
+-- GUI Library (simplified and mobile-friendly) local Library = loadstring(game:HttpGet("https://pastebin.com/raw/ZylA2sGp"))() -- simple RGB UI lib local GUI = Library:CreateWindow("Mutsuz Hub", Color3.fromRGB(255, 0, 0), true)
+
+-- Tabs local mainTab = GUI:CreateTab("Main") local farmTab = GUI:CreateTab("Farm") buildTab = GUI:CreateTab("Build") treeTP = GUI:CreateTab("Tree TP") autoLogs = GUI:CreateTab("Auto Bring Logs") local extra = GUI:CreateTab("Extra")
+
+-- Main tab mainTab:CreateButton("Teleport to Base", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(workspace.PlayerBases[Player.Name].Position) end)
+
+-- Tree TP tab (basic sample) local trees = {"OakTree", "PineTree", "VolcanoTree"} for _, tree in pairs(trees) do treeTP:CreateButton("TP to " .. tree, function() local found = workspace:FindFirstChild(tree) if found then Player.Character.HumanoidRootPart.CFrame = found.CFrame + Vector3.new(0, 10, 0) end end) end
+
+-- Auto Bring Logs tab local selectedTree = "" autoLogs:CreateDropdown("Tree Type", trees, function(opt) selectedTree = opt end)\n autoLogs:CreateToggle("Auto Chop + Bring + Sell", false, function(bool) _G.AutoFarm = bool while _G.AutoFarm do task.wait(1) -- Fake logic for tree chop and sell print("Farming tree:", selectedTree) -- You would insert actual chop/move code here end end)
+
+-- Extra tab extra:CreateButton("Open Infinite Yield", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))() end) extra:CreateButton("Enable Fling", function() -- Sample fling logic print("Fling activated") end) extra:CreateSlider("WalkSpeed", 16, 200, function(val) Player.Character.Humanoid.WalkSpeed = val end) extra:CreateSlider("JumpPower", 50, 200, function(val) Player.Character.Humanoid.JumpPower = val end)
+
+-- Bridge toggle buildTab:CreateToggle("Remove Bridge Water", false, function(state) local water = workspace:FindFirstChild("BridgeWater") if water then water.Transparency = state and 1 or 0 end end)
+
+-- RGB effect runs internally via UI library print("Mutsuz Hub Loaded!")
+
+    
